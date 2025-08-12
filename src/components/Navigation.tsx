@@ -1,6 +1,7 @@
 import { Calendar, Crown, Play, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
 import type { MovieCategory } from "../types/tmdb";
+import { Selector } from "./Selector";
 
 interface NavigationProps {
   category: MovieCategory;
@@ -61,37 +62,31 @@ export const Navigation = ({
 
   return (
     <nav className="bg-black/20 backdrop-blur-sm border-b border-white/10">
-      <div className="container mx-auto px-6 py-4 flex justify-between"></div>
-      <div className="flex space-x-6">
-        {navigationConfig.map(({ key, label, icon: Icon, color }) => (
-          <button
-            key={key}
-            onClick={() => setCategory(key as MovieCategory)}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-full font-bold transition-all hover:scale-105 ${
-              category === key
-                ? `bg-gradient-to-r ${color} text-white shadow-2xl`
-                : "text-gray-300 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <Icon className="h-5 w-5" />
-            <span>{label}</span>
-          </button>
-        ))}
+      <div className="container mx-auto px-0 py-4 flex flex-col md:flex-row md:justify-between">
+        <div className="-mx-4 overflow-x-auto">
+          <div className="flex space-x-4 px-4">
+            {navigationConfig.map(({ key, label, icon: Icon, color }) => (
+              <button
+                key={key}
+                onClick={() => setCategory(key as MovieCategory)}
+                className={`flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-full font-bold transition-all hover:scale-105 whitespace-nowrap ${
+                  category === key
+                    ? `bg-gradient-to-r ${color} text-white shadow-2xl`
+                    : "text-gray-300 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+                <span className="text-sm md:text-base">{label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
-        <select
-          className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer"
-          value={selectedGenre || ""}
-          onChange={(e) =>
-            setSelectedGenre(e.target.value ? Number(e.target.value) : null)
-          }
-        >
-          <option value="">🎭 All Genres</option>
-          {genres.map((g) => (
-            <option key={g.id} value={g.id} className="bg-gray-800">
-              {g.name}
-            </option>
-          ))}
-        </select>
+        <Selector
+          genres={genres}
+          selectedGenre={selectedGenre}
+          setSelectedGenre={setSelectedGenre}
+        />
       </div>
     </nav>
   );
