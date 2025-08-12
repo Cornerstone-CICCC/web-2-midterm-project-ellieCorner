@@ -22,6 +22,7 @@ import { Navigation } from "./components/Navigation";
 import { HeartAnimation } from "./components/Heart";
 import { SortOptions } from "./components/SortOptions";
 import { sortMedia } from "./utils/sort";
+import { MovieCardSkeleton } from "./components/MovieCardSkeleton";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -119,7 +120,10 @@ function App() {
     []
   );
 
-  if (mediaLoading || searchLoading) return <Loading />;
+  const isInitialLoading = mediaLoading && displayedMovies.length === 0;
+
+  if (isInitialLoading) return <Loading />;
+
   if (mediaError) return <div className="text-red-500 p-6">{mediaError}</div>;
 
   return (
@@ -171,17 +175,21 @@ function App() {
       <main className="container mx-auto px-6 py-8">
         {viewMode === "grid" ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
-            {displayedMovies.map((movie, index) => (
-              <MovieCard
-                key={movie.id}
-                movie={movie}
-                genres={genres}
-                isFavorite={favorites.includes(movie.id)}
-                onFavoriteToggle={handleFavoriteToggle}
-                onMovieSelect={handleMovieSelect}
-                index={index}
-              />
-            ))}
+            {mediaLoading || searchLoading
+              ? Array.from({ length: 10 }).map((_, i) => (
+                  <MovieCardSkeleton key={i} />
+                ))
+              : displayedMovies.map((movie, index) => (
+                  <MovieCard
+                    key={movie.id}
+                    movie={movie}
+                    genres={genres}
+                    isFavorite={favorites.includes(movie.id)}
+                    onFavoriteToggle={handleFavoriteToggle}
+                    onMovieSelect={handleMovieSelect}
+                    index={index}
+                  />
+                ))}
           </div>
         ) : (
           <MovieListView
