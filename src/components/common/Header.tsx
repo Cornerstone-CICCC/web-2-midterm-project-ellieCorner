@@ -1,5 +1,13 @@
-import { Armchair, Grid, List, Search, Volume2, VolumeX } from "lucide-react";
-import { memo } from "react";
+import {
+  Armchair,
+  Grid,
+  List,
+  Search,
+  Volume2,
+  VolumeX,
+  X,
+} from "lucide-react";
+import { memo, useState } from "react";
 import type { ViewMode } from "../../types/tmdb";
 
 interface HeaderProps {
@@ -19,34 +27,51 @@ export const Header = memo(
     onViewModeChange,
     soundEnabled,
     onSoundToggle,
-  }: HeaderProps) => (
-    <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <div className="relative">
-                <Armchair className="h-8 w-8 text-purple-400" />
-              </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
-                Movie site
-              </h1>
-              <span className="px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full">
-                BETA
-              </span>
-            </div>
+  }: HeaderProps) => {
+    const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
+    return (
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
+        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Armchair className="h-8 w-8 text-purple-400" />
+            <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
+              Movie site
+            </h1>
+            <span className="px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full">
+              BETA
+            </span>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <input
-                type="text"
-                placeholder="Search Movie or TV... 🔍"
-                className="pl-10 pr-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent w-64 transition-all focus:w-72"
-                value={searchTerm}
-                onChange={(e) => onSearchChange(e.target.value)}
-              />
+          <div className="flex items-center space-x-2">
+            <div className="sm:hidden">
+              <button
+                onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-gray-400"
+              >
+                {mobileSearchOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Search className="h-5 w-5" />
+                )}
+              </button>
+            </div>
+
+            <div
+              className={`absolute top-full left-0 w-full px-4 py-2 sm:static sm:w-auto sm:px-0 sm:py-0 transition-all ${
+                mobileSearchOpen ? "block" : "hidden"
+              } sm:block`}
+            >
+              <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <input
+                  type="text"
+                  placeholder="Search Movie or TV... 🔍"
+                  className="pl-10 pr-4 py-2 w-full sm:w-64 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all focus:w-full sm:focus:w-72"
+                  value={searchTerm}
+                  onChange={(e) => onSearchChange(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="flex items-center space-x-2">
@@ -74,8 +99,8 @@ export const Header = memo(
                 onClick={onSoundToggle}
                 className={`p-2 rounded-lg transition-all ${
                   soundEnabled
-                    ? "bg-green-500/50 text-white"
-                    : "text-gray-400/50 hover:text-white hover:bg-white/10"
+                    ? "bg-green-500 text-white"
+                    : "text-gray-400 hover:text-white hover:bg-white/10"
                 }`}
               >
                 {soundEnabled ? (
@@ -87,7 +112,7 @@ export const Header = memo(
             </div>
           </div>
         </div>
-      </div>
-    </header>
-  )
+      </header>
+    );
+  }
 );
