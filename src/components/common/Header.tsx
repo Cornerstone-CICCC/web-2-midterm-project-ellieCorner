@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { memo, useState } from "react";
 import type { ViewMode } from "../../types/tmdb";
+import { ThemeToggleButton } from "./ThemeToggleButton";
 
 interface HeaderProps {
   searchTerm: string;
@@ -31,7 +32,7 @@ export const Header = memo(
     const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
     return (
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10 dark:bg-white">
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Armchair className="h-8 w-8 text-purple-400" />
@@ -109,6 +110,7 @@ export const Header = memo(
                   <VolumeX className="h-5 w-5" />
                 )}
               </button>
+              <ThemeToggleButton />
             </div>
           </div>
         </div>
