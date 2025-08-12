@@ -123,7 +123,7 @@ function App() {
   if (mediaError) return <div className="text-red-500 p-6">{mediaError}</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br dark:from-slate-900 dark:via-purple-900 dark:to-slate-900">
       <Header
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
