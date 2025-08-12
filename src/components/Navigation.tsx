@@ -61,25 +61,23 @@ export const Navigation = ({
   );
 
   return (
-    <nav className="bg-black/20 backdrop-blur-sm border-b border-white/10">
-      <div className="container mx-auto px-0 py-4 flex flex-col md:flex-row md:justify-between">
-        <div className="-mx-4 overflow-x-auto">
-          <div className="flex space-x-4 px-4">
-            {navigationConfig.map(({ key, label, icon: Icon, color }) => (
-              <button
-                key={key}
-                onClick={() => setCategory(key as MovieCategory)}
-                className={`flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-full font-bold transition-all hover:scale-105 whitespace-nowrap ${
-                  category === key
-                    ? `bg-gradient-to-r ${color} text-white shadow-2xl`
-                    : "text-gray-300 hover:text-white hover:bg-white/10"
-                }`}
-              >
-                <Icon className="h-5 w-5" />
-                <span className="text-sm md:text-base">{label}</span>
-              </button>
-            ))}
-          </div>
+    <nav className="bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-40 backdrop-blur-md">
+      <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:justify-between items-center space-y-2 md:space-y-0">
+        <div className="flex space-x-2 overflow-x-auto -mx-2 px-2">
+          {navigationConfig.map(({ key, label, icon: Icon, color }) => (
+            <button
+              key={key}
+              onClick={() => setCategory(key as MovieCategory)}
+              className={`flex-shrink-0 flex items-center space-x-2 px-4 py-2 rounded-full font-semibold transition-all whitespace-nowrap ${
+                category === key
+                  ? `bg-gradient-to-r ${color} text-white shadow-lg`
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700"
+              }`}
+            >
+              <Icon className="h-5 w-5" />
+              <span className="text-sm md:text-base">{label}</span>
+            </button>
+          ))}
         </div>
 
         <Selector

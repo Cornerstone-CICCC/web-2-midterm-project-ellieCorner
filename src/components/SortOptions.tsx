@@ -8,25 +8,17 @@ interface SortOptionsProps {
 
 export const SortOptions = ({ sortBy, onSortChange }: SortOptionsProps) => {
   return (
-    <div className="flex items-center space-x-2 text-gray-400">
+    <div className="flex items-center space-x-2 text-gray-700 dark:text-gray-300">
       <span>Sort by:</span>
       <select
         value={sortBy}
         onChange={onSortChange}
-        className="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-white text-sm"
+        className="bg-white/80 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-1 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600"
       >
-        <option value="popularity" className="bg-gray-800">
-          Popularity
-        </option>
-        <option value="release_date" className="bg-gray-800">
-          Release Date
-        </option>
-        <option value="vote_average" className="bg-gray-800">
-          Rating
-        </option>
-        <option value="title" className="bg-gray-800">
-          Title
-        </option>
+        <option value="popularity">Popularity</option>
+        <option value="release_date">Release Date</option>
+        <option value="vote_average">Rating</option>
+        <option value="title">Title</option>
       </select>
     </div>
   );

@@ -152,15 +152,15 @@ function App() {
         genres={genres}
       />
 
-      <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 backdrop-blur-sm border-b border-white/10">
+      <div className="bg-gradient-to-r from-purple-100/50 to-blue-100/50 dark:from-purple-900/50 dark:to-blue-900/50 backdrop-blur-sm border-b border-gray-200 dark:border-white/10">
         <div className="container mx-auto px-6 py-3 flex justify-between text-sm">
-          <div className="flex items-center space-x-6 text-gray-300">
+          <div className="flex items-center space-x-6 text-gray-700 dark:text-gray-300">
             <span className="flex items-center space-x-2">
-              <Flame className="h-4 w-4 text-orange-400" />
+              <Flame className="h-4 w-4 text-orange-500 dark:text-orange-400" />
               <span>{displayedMovies.length} movies found</span>
             </span>
             <span className="flex items-center space-x-2">
-              <Heart className="h-4 w-4 text-red-400" />
+              <Heart className="h-4 w-4 text-red-500 dark:text-red-400" />
               <span>{favorites.length} in favorites</span>
             </span>
           </div>

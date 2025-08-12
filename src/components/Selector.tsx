@@ -33,11 +33,11 @@ export const Selector = ({
   };
 
   return (
-    <div className="relative w-full md:w-64 text-white z-40">
+    <div className="relative w-full md:w-64 z-40">
       <button
         ref={buttonRef}
         onClick={toggleOpen}
-        className="w-full flex justify-between items-center px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm font-semibold hover:bg-white/20 transition-all"
+        className="w-full flex justify-between items-center px-4 py-2 rounded-xl bg-white/10 dark:bg-black/20 backdrop-blur-sm font-semibold text-gray-900 dark:text-white hover:bg-white/20 dark:hover:bg-gray-700/30 transition-all"
       >
         {selectedName}
         <ChevronDown
@@ -49,10 +49,10 @@ export const Selector = ({
         createPortal(
           <ul
             style={{ top: coords.top, left: coords.left, width: coords.width }}
-            className="absolute z-50 mt-2 w-full max-h-60 overflow-y-auto bg-white/80 backdrop-blur-sm rounded-xl shadow-lg"
+            className="absolute z-50 mt-2 max-h-60 overflow-y-auto bg-white/80 dark:bg-black/80 backdrop-blur-sm rounded-xl shadow-lg text-gray-900 dark:text-white"
           >
             <li
-              className="px-4 py-2 cursor-pointer hover:bg-white/20"
+              className="px-4 py-2 cursor-pointer hover:bg-white/20 dark:hover:bg-gray-700/30"
               onClick={() => {
                 setSelectedGenre(null);
                 setOpen(false);
@@ -63,7 +63,7 @@ export const Selector = ({
             {genres.map((g) => (
               <li
                 key={g.id}
-                className="px-4 py-2 cursor-pointer hover:bg-white/20"
+                className="px-4 py-2 cursor-pointer hover:bg-white/20 dark:hover:bg-gray-700/30"
                 onClick={() => {
                   setSelectedGenre(g.id);
                   setOpen(false);
