@@ -6,6 +6,7 @@ import type {
   Media,
   MovieCategory,
   MovieDetails,
+  SortKey,
   ViewMode,
 } from "./types/tmdb";
 import { useLocalStorage } from "./hooks/useLocalStorage";
@@ -19,6 +20,8 @@ import { useMedia } from "./hooks/useMedia";
 import { useSearch } from "./hooks/useSearch";
 import { Navigation } from "./components/Navigation";
 import { HeartAnimation } from "./components/Heart";
+import { SortOptions } from "./components/SortOptions";
+import { sortMedia } from "./utils/sort";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,6 +35,7 @@ function App() {
   const [favorites, setFavorites] = useLocalStorage<number[]>("favorites", []);
   const [hearts, setHearts] = useState<number[]>([]);
   const [isHeartAnimating, setIsHeartAnimating] = useState(false);
+  const [sortBy, setSortBy] = useState<SortKey>("popularity");
 
   const {
     movies,
@@ -49,11 +53,12 @@ function App() {
 
   const displayedMovies = useMemo(() => {
     const baseList = debouncedTerm ? searchResults : [...movies, ...tv];
+    const filtered = selectedGenre
+      ? baseList.filter((m) => m.genre_ids?.includes(selectedGenre))
+      : baseList;
 
-    return baseList.filter((m) =>
-      selectedGenre ? m.genre_ids.includes(selectedGenre) : true
-    );
-  }, [movies, tv, searchResults, debouncedTerm, selectedGenre]);
+    return sortMedia(filtered, sortBy);
+  }, [movies, tv, searchResults, debouncedTerm, selectedGenre, sortBy]);
 
   const handleFavoriteToggle = useCallback(
     (movieId: number) => {
@@ -106,6 +111,14 @@ function App() {
     []
   );
 
+  const handleSortChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const value = e.target.value as SortKey;
+      setSortBy(value);
+    },
+    []
+  );
+
   if (mediaLoading || searchLoading) return <Loading />;
   if (mediaError) return <div className="text-red-500 p-6">{mediaError}</div>;
 
@@ -151,23 +164,7 @@ function App() {
               <span>{favorites.length} in favorites</span>
             </span>
           </div>
-          <div className="flex items-center space-x-2 text-gray-400">
-            <span>Sort by:</span>
-            <select className="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-white text-sm">
-              <option value="popularity" className="bg-gray-800">
-                Popularity
-              </option>
-              <option value="release_date" className="bg-gray-800">
-                Release Date
-              </option>
-              <option value="vote_average" className="bg-gray-800">
-                Rating
-              </option>
-              <option value="title" className="bg-gray-800">
-                Title
-              </option>
-            </select>
-          </div>
+          <SortOptions sortBy={sortBy} onSortChange={handleSortChange} />
         </div>
       </div>
 

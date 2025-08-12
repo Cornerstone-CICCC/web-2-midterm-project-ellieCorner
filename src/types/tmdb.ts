@@ -105,3 +105,5 @@ export interface TMDBListResponse<T> {
   total_pages: number;
   total_results: number;
 }
+
+export type SortKey = "popularity" | "release_date" | "vote_average" | "title";
