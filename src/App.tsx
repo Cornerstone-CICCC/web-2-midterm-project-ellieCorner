@@ -205,10 +205,6 @@ function App() {
         )}
       </main>
 
-      {hearts.map((id) => (
-        <Heart key={id} />
-      ))}
-
       {isHeartAnimating && (
         <HeartAnimation
           movieId={hearts[0]}

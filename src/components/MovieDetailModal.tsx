@@ -12,6 +12,92 @@ import {
 } from "lucide-react";
 import { getImageUrl, getNumber, getYear } from "../utils/formatters";
 
+const InfoCard = ({
+  icon,
+  value,
+  label,
+}: {
+  icon: React.ReactNode;
+  value: string;
+  label: string;
+}) => (
+  <div className="rounded-xl p-4 text-center bg-gray-100 dark:bg-white/5">
+    <div className="flex items-center justify-center mb-2">{icon}</div>
+    <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+      {value}
+    </div>
+    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+      {label}
+    </div>
+  </div>
+);
+
+const ActionButton = ({
+  variant,
+  icon,
+  label,
+  onClick,
+}: {
+  variant: "primary" | "secondary" | "favorite";
+  icon: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+}) => {
+  const base =
+    "px-5 sm:px-6 py-2.5 rounded-full flex items-center gap-2 font-medium transition-all hover:scale-105";
+  const variants = {
+    primary:
+      "bg-gradient-to-r from-red-600 to-red-500 text-white shadow-lg hover:shadow-xl",
+    secondary:
+      "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/20",
+    favorite: "bg-red-500 text-white hover:bg-red-600 shadow-md",
+  };
+  return (
+    <button onClick={onClick} className={`${base} ${variants[variant]}`}>
+      {icon}
+      <span>{label}</span>
+    </button>
+  );
+};
+
+const Section = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <div>
+    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+      {title}
+    </h3>
+    {children}
+  </div>
+);
+
+const DetailRow = ({
+  label,
+  value,
+  highlight,
+}: {
+  label: string;
+  value: string | number;
+  highlight?: boolean;
+}) => (
+  <div className="flex justify-between text-sm sm:text-base">
+    <span>{label}:</span>
+    <span
+      className={
+        highlight
+          ? "text-green-600 dark:text-green-400 font-medium"
+          : "text-gray-900 dark:text-white"
+      }
+    >
+      {value}
+    </span>
+  </div>
+);
+
 interface MovieDetailModalProps {
   movie: MovieDetails;
   isFavorite: boolean;
@@ -21,178 +107,141 @@ interface MovieDetailModalProps {
 
 export const MovieDetailModal = memo(
   ({ movie, isFavorite, onClose, onFavoriteToggle }: MovieDetailModalProps) => (
-    <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl max-w-5xl w-full max-h-[95vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 dark:bg-black/80 backdrop-blur-sm overflow-y-auto">
+      <div className="w-full max-w-5xl max-h-[95vh] overflow-y-auto rounded-3xl shadow-2xl bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 transition-colors">
         <div className="relative">
           <img
             src={getImageUrl(movie.backdrop_path, "backdrop")}
             alt={movie.title}
-            className="w-full h-80 object-cover rounded-t-3xl"
+            className="w-full h-56 sm:h-72 md:h-80 object-cover rounded-t-3xl"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent rounded-t-3xl" />
           <button
             onClick={onClose}
-            className="z-50 absolute top-6 right-6 bg-black/50 backdrop-blur-sm rounded-full p-3 text-white hover:bg-black/70 transition-all hover:scale-110"
+            className="z-50 absolute top-4 right-4 sm:top-6 sm:right-6 bg-black/50 dark:bg-white/20 backdrop-blur-sm rounded-full p-2.5 sm:p-3 text-white hover:bg-black/70 dark:hover:bg-white/30 transition-all hover:scale-110"
           >
-            <span className="text-xl">✕</span>
+            <span className="text-lg sm:text-xl">✕</span>
           </button>
 
           <div className="absolute inset-0 flex items-center justify-center">
-            <button className="bg-red-600/80 backdrop-blur-sm hover:bg-red-600 rounded-full p-6 text-white transition-all hover:scale-110 group">
-              <Play className="h-12 w-12 fill-current group-hover:scale-110 transition-transform" />
+            <button className="bg-red-600/90 hover:bg-red-600 rounded-full p-5 sm:p-6 text-white transition-all hover:scale-105 shadow-lg group">
+              <Play className="h-10 w-10 sm:h-12 sm:w-12 fill-current group-hover:scale-110 transition-transform" />
             </button>
           </div>
         </div>
 
-        <div className="p-8">
-          <div className="flex items-start space-x-8 mb-8">
-            <div className="relative">
+        <div className="p-6 sm:p-8">
+          <div className="flex flex-col md:flex-row md:space-x-8 mb-8 md:gap-4">
+            <div className="relative mx-auto md:mx-0 mb-6 md:mb-0 w-32 sm:w-40 shrink-0">
               <img
                 src={getImageUrl(movie.poster_path)}
                 alt={movie.title}
-                className="w-40 h-60 object-cover rounded-2xl shadow-2xl"
+                className="w-full h-auto rounded-2xl shadow-2xl"
               />
-              <div className="absolute -bottom-4 -right-4 bg-yellow-500 rounded-full p-3">
-                <Star className="h-6 w-6 text-white fill-current" />
-              </div>
             </div>
+
             <div className="flex-1">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h2 className="text-4xl font-bold text-white mb-2">
-                    {movie.title}
-                  </h2>
-                  {movie.tagline && (
-                    <p className="text-xl text-purple-300 italic mb-2">
-                      "{movie.tagline}"
-                    </p>
-                  )}
-                </div>
-              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                {movie.title}
+              </h2>
+              {movie.tagline && (
+                <p className="text-base sm:text-lg text-purple-600 dark:text-purple-300 italic mb-4">
+                  "{movie.tagline}"
+                </p>
+              )}
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="bg-white/5 rounded-xl p-4 text-center">
-                  <div className="flex items-center justify-center mb-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                <InfoCard
+                  icon={
                     <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                  </div>
-                  <div className="text-2xl font-bold text-white">
-                    {movie.vote_average.toFixed(1)}
-                  </div>
-                  <div className="text-sm text-gray-400">Rating</div>
-                </div>
-                <div className="bg-white/5 rounded-xl p-4 text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <Users className="h-6 w-6 text-blue-400" />
-                  </div>
-                  <div className="text-2xl font-bold text-white">
-                    {getNumber(movie.vote_count)}
-                  </div>
-                  <div className="text-sm text-gray-400">Votes</div>
-                </div>
-                <div className="bg-white/5 rounded-xl p-4 text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <Calendar className="h-6 w-6 text-green-400" />
-                  </div>
-                  <div className="text-2xl font-bold text-white">
-                    {getYear(movie.release_date)}
-                  </div>
-                  <div className="text-sm text-gray-400">Release</div>
-                </div>
-                <div className="bg-white/5 rounded-xl p-4 text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <Clock className="h-6 w-6 text-purple-400" />
-                  </div>
-                  <div className="text-2xl font-bold text-white">
-                    {movie.runtime}m
-                  </div>
-                  <div className="text-sm text-gray-400">Runtime</div>
-                </div>
+                  }
+                  value={movie.vote_average.toFixed(1)}
+                  label="Rating"
+                />
+                <InfoCard
+                  icon={<Users className="h-6 w-6 text-blue-500" />}
+                  value={getNumber(movie.vote_count)}
+                  label="Votes"
+                />
+                <InfoCard
+                  icon={<Calendar className="h-6 w-6 text-green-500" />}
+                  value={getYear(movie.release_date)}
+                  label="Release"
+                />
+                <InfoCard
+                  icon={<Clock className="h-6 w-6 text-purple-500" />}
+                  value={`${movie.runtime}m`}
+                  label="Runtime"
+                />
               </div>
 
-              <div className="flex flex-wrap gap-3 mb-6">
+              <div className="flex flex-wrap gap-2 mb-6">
                 {movie.genres.map((genre) => (
                   <span
                     key={genre.id}
-                    className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-300 px-4 py-2 rounded-full text-sm font-semibold"
+                    className="px-3 py-1.5 rounded-full text-sm font-medium bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300"
                   >
                     {genre.name}
                   </span>
                 ))}
               </div>
 
-              <div className="flex space-x-4">
-                <button className="bg-gradient-to-r from-red-600 to-red-500 text-white px-8 py-3 rounded-full flex items-center space-x-3 hover:shadow-2xl transition-all hover:scale-105 font-bold">
-                  <Play className="h-5 w-5" />
-                  <span>Watch Now</span>
-                </button>
-                <button
+              <div className="flex flex-wrap gap-3">
+                <ActionButton
+                  variant="primary"
+                  icon={<Play className="h-5 w-5" />}
+                  label="Watch Now"
+                />
+                <ActionButton
                   onClick={() => onFavoriteToggle(movie.id)}
-                  className={`px-8 py-3 rounded-full flex items-center space-x-3 transition-all hover:scale-105 font-bold ${
-                    isFavorite
-                      ? "bg-red-500 text-white"
-                      : "bg-white/10 text-white hover:bg-red-500"
-                  }`}
-                >
-                  <Heart
-                    className={`h-5 w-5 ${isFavorite ? "fill-current" : ""}`}
-                  />
-                  <span>
-                    {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-                  </span>
-                </button>
-                <button className="bg-white/10 text-white px-8 py-3 rounded-full flex items-center space-x-3 hover:bg-white/20 transition-all hover:scale-105 font-bold">
-                  <BookmarkPlus className="h-5 w-5" />
-                  <span>Watchlist</span>
-                </button>
-                <button className="bg-white/10 text-white px-8 py-3 rounded-full flex items-center space-x-3 hover:bg-white/20 transition-all hover:scale-105 font-bold">
-                  <Share2 className="h-5 w-5" />
-                  <span>Share</span>
-                </button>
+                  variant={isFavorite ? "favorite" : "secondary"}
+                  icon={
+                    <Heart
+                      className={`h-5 w-5 ${isFavorite ? "fill-current" : ""}`}
+                    />
+                  }
+                  label={
+                    isFavorite ? "Remove from Favorites" : "Add to Favorites"
+                  }
+                />
+                <ActionButton
+                  variant="secondary"
+                  icon={<BookmarkPlus className="h-5 w-5" />}
+                  label="Watchlist"
+                />
+                <ActionButton
+                  variant="secondary"
+                  icon={<Share2 className="h-5 w-5" />}
+                  label="Share"
+                />
               </div>
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-4 flex items-center space-x-2">
-                <span>📖</span>
-                <span>Overview</span>
-              </h3>
-              <p className="text-gray-300 leading-relaxed text-lg">
+          <div className="space-y-8">
+            <Section title="📖 Overview">
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg">
                 {movie.overview}
               </p>
-            </div>
+            </Section>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h4 className="text-xl font-bold text-white mb-3 flex items-center space-x-2">
-                  <span>ℹ️</span>
-                  <span>Details</span>
-                </h4>
-                <div className="space-y-2 text-gray-300">
-                  <div className="flex justify-between">
-                    <span>Original Title:</span>
-                    <span className="text-white">{movie.original_title}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Status:</span>
-                    <span className="text-green-400">{movie.status}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Language:</span>
-                    <span className="text-white uppercase">
-                      {movie.original_language}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Popularity:</span>
-                    <span className="text-white">
-                      {getNumber(movie.popularity)}
-                    </span>
-                  </div>
-                </div>
+            <Section title="ℹ️ Details">
+              <div className="space-y-2 text-gray-700 dark:text-gray-300">
+                <DetailRow
+                  label="Original Title"
+                  value={movie.original_title}
+                />
+                <DetailRow label="Status" value={movie.status} highlight />
+                <DetailRow
+                  label="Language"
+                  value={movie.original_language.toUpperCase()}
+                />
+                <DetailRow
+                  label="Popularity"
+                  value={getNumber(movie.popularity)}
+                />
               </div>
-            </div>
+            </Section>
           </div>
         </div>
       </div>
