@@ -17,6 +17,7 @@ import { SortOptions } from "./components/SortOptions";
 import { sortMedia } from "./utils/sort";
 import { MovieCardSkeleton } from "./components/MovieCardSkeleton";
 import { useControls } from "./layout/RootLayout";
+import clsx from "clsx";
 
 export const Home = () => {
   const { searchTerm, viewMode } = useControls();
@@ -30,6 +31,7 @@ export const Home = () => {
   const [hearts, setHearts] = useState<number[]>([]);
   const [isHeartAnimating, setIsHeartAnimating] = useState(false);
   const [sortBy, setSortBy] = useState<SortKey>("popularity");
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const {
     movies,
@@ -47,11 +49,23 @@ export const Home = () => {
 
   const displayedMovies = useMemo(() => {
     const baseList = debouncedTerm ? searchResults : [...movies, ...tv];
-    const filtered = selectedGenre
+    const filteredByGenre = selectedGenre
       ? baseList.filter((m) => m.genre_ids?.includes(selectedGenre))
       : baseList;
-    return sortMedia(filtered, sortBy);
-  }, [movies, tv, searchResults, debouncedTerm, selectedGenre, sortBy]);
+    const filteredByFavorites = showFavoritesOnly
+      ? filteredByGenre.filter((m) => favorites.includes(m.id))
+      : filteredByGenre;
+    return sortMedia(filteredByFavorites, sortBy);
+  }, [
+    movies,
+    tv,
+    searchResults,
+    debouncedTerm,
+    selectedGenre,
+    sortBy,
+    showFavoritesOnly,
+    favorites,
+  ]);
 
   const handleFavoriteToggle = useCallback(
     (movieId: number) => {
@@ -130,7 +144,13 @@ export const Home = () => {
               <Flame className="h-4 w-4 text-orange-500 dark:text-orange-400" />
               <span>{displayedMovies.length} movies found</span>
             </span>
-            <span className="flex items-center space-x-2">
+            <span
+              className={clsx(
+                "flex items-center space-x-2 cursor-pointer",
+                showFavoritesOnly && "text-red-500 dark:text-red-400 font-bold"
+              )}
+              onClick={() => setShowFavoritesOnly((prev) => !prev)}
+            >
               <Heart className="h-4 w-4 text-red-500 dark:text-red-400" />
               <span>{favorites.length} in favorites</span>
             </span>

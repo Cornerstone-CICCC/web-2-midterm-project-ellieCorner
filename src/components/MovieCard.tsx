@@ -71,8 +71,8 @@ export const MovieCard = memo(
                 </span>
               </div>
               {movie.popularity > 1000 && (
-                <div className="bg-red-500/80 backdrop-blur-sm rounded-full px-2 py-1">
-                  <span className="text-xs text-white font-bold">HOT</span>
+                <div className="bg-red-500/80 backdrop-blur-sm rounded-full px-3 py-1.5">
+                  <span className="text-sm text-white font-bold">HOT</span>
                 </div>
               )}
             </div>
