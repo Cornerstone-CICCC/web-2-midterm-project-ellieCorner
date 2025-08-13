@@ -28,7 +28,7 @@ export const MovieListView = memo(
           style={{ animationDelay: `${index * 0.1}s` }}
           onClick={() => onMovieSelect(movie)}
         >
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-6 space-y-4 md:space-y-0">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:space-x-6 space-y-4 md:space-y-0">
             <div className="relative flex-shrink-0 mx-auto md:mx-0">
               <img
                 src={getImageUrl(movie.poster_path)}
@@ -55,7 +55,7 @@ export const MovieListView = memo(
                   <div className="flex items-center space-x-1 bg-yellow-100 dark:bg-yellow-500/20 rounded-full px-3 py-1">
                     <Star className="h-4 w-4 text-yellow-500 dark:text-yellow-400 fill-current" />
                     <span className="text-sm text-yellow-600 dark:text-yellow-400 font-semibold">
-                      {movie.vote_average.toFixed(1)}
+                      {movie.vote_average?.toFixed(1)}
                     </span>
                   </div>
                   <div className="text-gray-500 dark:text-gray-400 text-sm">
@@ -89,9 +89,7 @@ export const MovieListView = memo(
                 <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
                   <span className="flex items-center space-x-1">
                     <Calendar className="h-4 w-4" />
-                    <span>
-                      {getYear(movie.release_date || movie.first_air_date)}
-                    </span>
+                    <span>{getYear(movie)}</span>
                   </span>
                   <span className="flex items-center space-x-1">
                     <TrendingUp className="h-4 w-4" />

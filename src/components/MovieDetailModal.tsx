@@ -165,7 +165,7 @@ export const MovieDetailModal = memo(
                 />
                 <InfoCard
                   icon={<Calendar className="h-6 w-6 text-green-500" />}
-                  value={getYear(movie.release_date)}
+                  value={String(getYear(movie))}
                   label="Release"
                 />
                 <InfoCard
@@ -229,7 +229,7 @@ export const MovieDetailModal = memo(
               <div className="space-y-2 text-gray-700 dark:text-gray-300">
                 <DetailRow
                   label="Original Title"
-                  value={movie.original_title}
+                  value={movie.original_title ?? ""}
                 />
                 <DetailRow label="Status" value={movie.status} highlight />
                 <DetailRow
