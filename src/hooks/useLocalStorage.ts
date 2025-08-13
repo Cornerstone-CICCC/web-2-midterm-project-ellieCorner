@@ -3,8 +3,10 @@ import { useCallback, useState } from "react";
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
-      return initialValue;
-    } catch {
+      const item = window.localStorage.getItem(key);
+      return item ? (JSON.parse(item) as T) : initialValue;
+    } catch (error) {
+      console.error("Error reading localStorage:", error);
       return initialValue;
     }
   });
@@ -15,11 +17,12 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
         const valueToStore =
           value instanceof Function ? value(storedValue) : value;
         setStoredValue(valueToStore);
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
       } catch (error) {
         console.error("Error setting localStorage:", error);
       }
     },
-    [storedValue]
+    [key, storedValue]
   );
 
   return [storedValue, setValue] as const;
