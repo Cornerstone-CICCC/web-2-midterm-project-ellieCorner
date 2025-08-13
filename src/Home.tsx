@@ -75,7 +75,7 @@ export const Home = () => {
         if (isCurrentlyFavorited) {
           return prev.filter((id) => id !== movieId);
         } else {
-          setHearts((prev) => [...prev, movieId]);
+          setHearts([movieId]);
           setIsHeartAnimating(true);
           return [...prev, movieId];
         }
@@ -83,6 +83,11 @@ export const Home = () => {
     },
     [setFavorites]
   );
+
+  const handleHeartAnimationEnd = useCallback(() => {
+    setIsHeartAnimating(false);
+    setHearts([]);
+  }, []);
 
   const handleMovieSelect = useCallback(
     (movie: Media) => {
@@ -198,8 +203,8 @@ export const Home = () => {
 
       {isHeartAnimating && (
         <HeartAnimation
-          movieId={hearts[0]}
-          onEnd={() => setIsHeartAnimating(false)}
+          movieId={hearts[hearts.length - 1]}
+          onEnd={handleHeartAnimationEnd}
         />
       )}
 
