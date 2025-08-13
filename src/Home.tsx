@@ -69,13 +69,17 @@ export const Home = () => {
 
   const handleFavoriteToggle = useCallback(
     (movieId: number) => {
-      setFavorites((prev) =>
-        prev.includes(movieId)
-          ? prev.filter((id) => id !== movieId)
-          : [...prev, movieId]
-      );
-      setHearts((prev) => [...prev, movieId]);
-      setIsHeartAnimating(true);
+      setFavorites((prev) => {
+        const isCurrentlyFavorited = prev.includes(movieId);
+
+        if (isCurrentlyFavorited) {
+          return prev.filter((id) => id !== movieId);
+        } else {
+          setHearts((prev) => [...prev, movieId]);
+          setIsHeartAnimating(true);
+          return [...prev, movieId];
+        }
+      });
     },
     [setFavorites]
   );
