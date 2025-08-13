@@ -1,7 +1,6 @@
-import React from "react";
 import { Outlet, useOutletContext } from "react-router";
 import { Header } from "../components/common/Header";
-// import { Footer } from "../components/common/Footer"; // 경로 프로젝트에 맞게 조정
+import { Footer } from "../components/common/Footer";
 import type { ViewMode } from "../types/tmdb";
 
 export type ControlsCtx = {
@@ -39,7 +38,7 @@ export default function RootLayout({ controls }: { controls: ControlsCtx }) {
       <main className="min-h-[70vh]">
         <Outlet context={controls} />
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
