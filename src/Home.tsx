@@ -1,5 +1,5 @@
 import { Flame, Heart } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { MovieCard } from "./components/MovieCard";
 import type { Media, MovieCategory, MovieDetails, SortKey } from "./types/tmdb";
 import { useLocalStorage } from "./hooks/useLocalStorage";
@@ -38,6 +38,8 @@ export const Home = () => {
     tv,
     trendingMovies,
     genres,
+    loadMore,
+    hasMore,
     loading: mediaLoading,
     error: mediaError,
   } = useMedia(category);
@@ -120,6 +122,21 @@ export const Home = () => {
     },
     []
   );
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 200 &&
+        hasMore &&
+        !mediaLoading
+      ) {
+        loadMore();
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasMore, mediaLoading, loadMore]);
 
   const isInitialLoading = mediaLoading && displayedMovies.length === 0;
   if (isInitialLoading) return <Loading />;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getMediaByCategory, getGenres, getTrending } from "../service/tmdb";
 import type { Genre, Media, MovieCategory } from "../types/tmdb";
 
@@ -7,27 +7,41 @@ export const useMedia = (category: MovieCategory) => {
   const [tv, setTv] = useState<Media[]>([]);
   const [trendingMovies, setTrendingMovies] = useState<Media[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let mounted = true;
-    setLoading(true);
+    setMovies([]);
+    setPage(1);
+    setHasMore(true);
+  }, [category]);
 
-    const fetchData = async () => {
+  useEffect(() => {
+    let mounted = true;
+    const fetchMovies = async () => {
+      setLoading(true);
       try {
         const [moviesRes, tvRes, genreRes, trendingRes] = await Promise.all([
-          getMediaByCategory("movie", category),
-          getMediaByCategory("tv", category),
+          getMediaByCategory("movie", category, page),
+          getMediaByCategory("tv", category, 1),
           getGenres("movie"),
           getTrending("movie", "day"),
         ]);
         if (!mounted) return;
 
-        setMovies(moviesRes.results);
-        setTrendingMovies(trendingRes.results);
-        setTv(tvRes.results);
-        setGenres(genreRes.genres);
+        setMovies((prev) =>
+          page === 1 ? moviesRes.results : [...prev, ...moviesRes.results]
+        );
+        if (page === 1) {
+          setTv(tvRes.results);
+          setGenres(genreRes.genres);
+          setTrendingMovies(trendingRes.results);
+        }
+        setHasMore(page < moviesRes.total_pages);
       } catch (err) {
         if (!mounted) return;
         setError(String(err));
@@ -36,12 +50,26 @@ export const useMedia = (category: MovieCategory) => {
         setLoading(false);
       }
     };
-
-    fetchData();
+    fetchMovies();
     return () => {
       mounted = false;
     };
-  }, [category]);
+  }, [page, category]);
 
-  return { movies, tv, trendingMovies, genres, loading, error };
+  const loadMore = useCallback(() => {
+    if (!loading && hasMore) {
+      setPage((p) => p + 1);
+    }
+  }, [loading, hasMore]);
+
+  return {
+    movies,
+    tv,
+    trendingMovies,
+    genres,
+    loading,
+    error,
+    loadMore,
+    hasMore,
+  };
 };
