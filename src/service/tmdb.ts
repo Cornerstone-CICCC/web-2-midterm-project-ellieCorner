@@ -23,7 +23,12 @@ async function request<T>(
     if (v != null) url.searchParams.set(k, String(v));
   });
 
-  const res = await fetch(url.toString());
+  const res = await fetch(url.toString(), {
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      "Content-Type": "application/json",
+    },
+  });
 
   if (!res.ok) {
     const txt = await res.text();

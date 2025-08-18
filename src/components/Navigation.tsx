@@ -63,7 +63,7 @@ export const Navigation = ({
   return (
     <nav className="bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-40 backdrop-blur-md">
       <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row md:justify-between items-center space-y-2 md:space-y-0">
-        <div className="flex flex-wrap md:flex-nowrap gap-2 md:gap-2 overflow-x-auto">
+        <div className="flex flex-wrap md:flex-nowrap gap-2 md:gap-2 overflow-x-auto no-scrollbar">
           {navigationConfig.map(({ key, label, icon: Icon, color }) => (
             <button
               key={key}

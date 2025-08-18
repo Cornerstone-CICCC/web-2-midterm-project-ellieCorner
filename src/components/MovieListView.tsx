@@ -43,11 +43,10 @@ export const MovieListView = memo(
               <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-3 space-y-3 md:space-y-0">
                 <div>
                   <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                    {movie.title}
+                    {movie.title || movie.name}
                   </h3>
                   <p className="text-gray-500 dark:text-gray-400 text-sm">
-                    {movie.original_title !== movie.title &&
-                      movie.original_title}
+                    {movie.original_title || movie.original_name}
                   </p>
                 </div>
 

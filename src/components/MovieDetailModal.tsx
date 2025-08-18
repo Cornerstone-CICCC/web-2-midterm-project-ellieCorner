@@ -108,7 +108,7 @@ interface MovieDetailModalProps {
 export const MovieDetailModal = memo(
   ({ movie, isFavorite, onClose, onFavoriteToggle }: MovieDetailModalProps) => (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 dark:bg-black/80 backdrop-blur-sm overflow-y-auto">
-      <div className="w-full max-w-5xl max-h-[95vh] overflow-y-auto rounded-3xl shadow-2xl bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 transition-colors">
+      <div className="w-full max-w-5xl max-h-[95vh] overflow-y-auto rounded-3xl shadow-2xl bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 transition-colors no-scrollbar">
         <div className="relative">
           <img
             src={getImageUrl(movie.backdrop_path, "backdrop")}
@@ -142,15 +142,10 @@ export const MovieDetailModal = memo(
 
             <div className="flex-1">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                {movie.title}
+                {movie.title || movie.original_name}
               </h2>
-              {movie.tagline && (
-                <p className="text-base sm:text-lg text-purple-600 dark:text-purple-300 italic mb-4">
-                  "{movie.tagline}"
-                </p>
-              )}
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-6">
                 <InfoCard
                   icon={
                     <Star className="h-6 w-6 text-yellow-400 fill-current" />
@@ -229,7 +224,7 @@ export const MovieDetailModal = memo(
               <div className="space-y-2 text-gray-700 dark:text-gray-300">
                 <DetailRow
                   label="Original Title"
-                  value={movie.original_title ?? ""}
+                  value={(movie.original_title || movie.original_name) ?? ""}
                 />
                 <DetailRow label="Status" value={movie.status} highlight />
                 <DetailRow
