@@ -1,42 +1,66 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/rsnzS7iF)
-# Web 2 - Midterm: Movie Web App
+# 🎬 Movie site
 
-**Goal:** Design and build a movie website app where it displays the trending movies and TV series of the day. The website should also include a search bar that the user can use to search for a title.
+![cover image](/public/cover.png)
 
-## Instructions ✔️
+A modern, responsive movie discovery web app built with **React**, **Tailwind CSS**, and **React Router**. Explore movies in both grid and list views, toggle dark/light mode, and enjoy animated loading components.
 
-1. Clone the repository to your local machine.
-2. Create the necessary branches for development such as `dev`. Do not work on the `main` branch.
-3. Create your wireframe and design on Figma or Whimsical. There is an example wireframe provided but you can create your own! Make sure to give your website your own unique name as well. For example: **FunMovies.com, MidnightPopcorn, FilmBuffs, etc.** Create your own logo for the website.
-4. For the API, use TMDB API to retrieve the data [https://developer.themoviedb.org/reference/intro/getting-started]. You need to create an account because an API key is needed to make requests. Read their documentation on how to send a GET request.
-5. You can use different libraries to build your project. This includes jQuery, carousels, sliders, or for those who want to use React, you can!
-6. Commit and push your changes. Before the presentation day, make sure to create a pull request to the `main` branch.
+[Figma Link](https://www.figma.com/design/C2L1HdVGDySTiKXntUnSFD/Movie-site?node-id=2-460&t=qL18OAOSkCisVyAf-0)
 
-## Features 💻
+---
 
-You can create more features but your movie website should have at least these:
+## 🍿 Features
 
-- **Responsive** - The website must be responsive and mobile-friendly.
-- **Dark/Light Mode** - The website should have a dark and light mode which the user can switch between by clicking on a button or icon.
-- **Search** - The user should be able to search for movies/tv shows. You don't need to have a separate page to show the results. You can add the search box on the header depending on your design.
+- **Responsive Layout**  
+  Fully responsive design supporting mobile, tablet, and desktop screens.
+- **Dark & Light Mode**  
+  Automatic theme switching using Tailwind's dark mode utilities.
+- **View Modes**  
+  Toggle between **grid** and **list** views for browsing movies.
 
-## Pages 📄
+- **Animated Loading Screen**  
+  A fun and engaging loading component with spinning icons, emoji, and gradient progress bar.
 
-You can create more pages but your movie website should have at least these:
+- **Header & Footer**  
+  Sticky header with search functionality and view mode toggle.  
+  Footer includes navigation links and credits, responsive across screen sizes.
 
-- **Home** - Your homepage should display the trending movies and TV shows of the day.
-- **About** - Information about your movie website.
+- **Movie Details Modal**  
+  Click on a movie card to see more details in a modal window.
 
-## API Endpoints 🤖
+---
 
-Below are some of the endpoints you might use on the website. You are free to use more.
+## 🎥 Tech Stack
 
-- [https://developer.themoviedb.org/reference/trending-movies]
-- [https://developer.themoviedb.org/reference/trending-tv]
-- [https://developer.themoviedb.org/reference/search-multi]
+- **React 18**
+- **TypeScript**
+- **Tailwind CSS** (with dark mode)
+- **React Router v6**
+- **Lucide Icons**
+- Custom hooks for local storage, search, and media queries
 
-## Presentation 📽️
+---
 
-Each student needs to present their project for at least 10 minutes. Present and explain your Figma design and show off all your features and pages.
+## 🎞️ Project Structure
 
-*Good luck!*
+```markdown
+src/
+├─ components/
+│ ├─ common/ # Header, Footer, Loading, EmptyState
+│ ├─ HeroSlideSection.tsx
+│ ├─ MovieCard.tsx
+│ ├─ MovieListView.tsx
+│ └─ MovieDetailModal.tsx
+├─ hooks/ # useLocalStorage, useSearch, useMedia
+├─ layout/ # RootLayout.tsx
+├─ types/ # TypeScript types for movies
+├─ utils/ # Helper functions (e.g., sort, movie details)
+├─ App.tsx
+├─ Home.tsx
+├─ About.tsx
+└─ index.css
+```
+
+---
+
+License
+MIT License © Ellie Jung
